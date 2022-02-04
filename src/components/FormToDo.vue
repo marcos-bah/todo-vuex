@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="$emit('add')">
+  <form @submit.prevent="submitTodo">
     <div class="field">
       <label class="label">Titulo</label>
       <div class="control">
@@ -70,6 +70,14 @@ export default defineComponent({
     const idExist = (id: number): boolean =>
       store.state.todos.find((todo: { id: number }) => todo.id === id);
     const removeTodoById = (id: number) => store.commit("removeTodoById", id);
+    const updateTodo = () => {
+      store.commit("updateTodo", localTodo.value);
+      store.commit("clearLocalTodo");
+    };
+    const addTodo = () => {
+      store.commit("addTodo", localTodo.value);
+      store.commit("clearLocalTodo");
+    };
     return {
       localTodo,
       setLocalTodoId,
@@ -78,9 +86,20 @@ export default defineComponent({
       clearLocalTodo,
       idExist,
       removeTodoById,
+      updateTodo,
+      addTodo,
     };
   },
   methods: {
+    submitTodo() {
+      if (this.isEdit) {
+        this.updateTodo();
+      } else {
+        this.addTodo();
+      }
+
+      this.$router.push("/");
+    },
     resetLocalTodo() {
       this.clearLocalTodo();
       this.$router.back();
