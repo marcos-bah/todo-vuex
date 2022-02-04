@@ -2,7 +2,7 @@
   <nav class="container navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <div class="title">rep2unifei</div>
+        <div class="title">ToDo Vuex</div>
       </router-link>
       <a
         :class="{ 'is-active': toggleBtn }"
