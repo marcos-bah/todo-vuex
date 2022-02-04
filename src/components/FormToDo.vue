@@ -53,23 +53,37 @@
 
 <script lang="ts">
 import { IToDo } from "@/Interfaces/IToDo";
-import { computed, defineComponent } from "vue";
+import { computed, onMounted, defineComponent } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 export default defineComponent({
   name: "FormToDo",
 
   setup() {
     const store = useStore();
+    const route = useRoute();
+
+    const initLocalTodo = (id: string) => {
+      store.commit("initLocalTodo", id);
+    };
+
+    onMounted(() => {
+      const id = route.params.id as string;
+      if (id) {
+        initLocalTodo(id);
+      }
+    });
+
     const localTodo = computed(() => store.state.localTodo as IToDo);
-    const setLocalTodoId = (id: number) => store.commit("setLocalTodoId", id);
+    const setLocalTodoId = (id: string) => store.commit("setLocalTodoId", id);
     const setLocalTodoTitle = (title: string) =>
       store.commit("setLocalTodoTitle", title);
     const setLocalTodoDescription = (description: string) =>
       store.commit("setLocalTodoDescription", description);
     const clearLocalTodo = () => store.commit("clearLocalTodo");
-    const idExist = (id: number): boolean =>
-      store.state.todos.find((todo: { id: number }) => todo.id === id);
-    const removeTodoById = (id: number) => store.commit("removeTodoById", id);
+    const idExist = (id: string): boolean =>
+      store.state.todos.find((todo: { id: string }) => todo.id === id);
+    const removeTodoById = (id: string) => store.commit("removeTodoById", id);
     const updateTodo = () => {
       store.commit("updateTodo", localTodo.value);
       store.commit("clearLocalTodo");
@@ -78,9 +92,7 @@ export default defineComponent({
       store.commit("addTodo", localTodo.value);
       store.commit("clearLocalTodo");
     };
-    const initLocalTodo = (id: number) => {
-      store.commit("initLocalTodo", id);
-    };
+
     return {
       localTodo,
       setLocalTodoId,
@@ -120,13 +132,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    const id = parseInt((this.$route.params.id || "0").toString());
-    if (id) {
-      this.initLocalTodo(id);
-    }
-
-    if (this.localTodo.id === 0) {
-      this.setLocalTodoId(new Date().getTime());
+    if (this.localTodo.id === "0") {
+      this.setLocalTodoId(new Date().getTime().toString());
     }
   },
   unmounted() {

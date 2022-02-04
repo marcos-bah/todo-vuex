@@ -11,14 +11,14 @@ export default createStore({
   state: {
     todos: [
       {
-        id: 1,
+        id: '1',
         title: 'Criar mais ToDo',
         description: 'Criar novos items no ToDo',
         isCompleted: false,
       }
     ] as IToDo[],
     localTodo: {
-      id: 0,
+      id: '0',
       title: '',
       description: '',
       isCompleted: false,
@@ -31,7 +31,7 @@ export default createStore({
     removeTodo(state, todo: IToDo) {
       state.todos.splice(state.todos.indexOf(todo), 1);
     },
-    removeTodoById(state, id: number) {
+    removeTodoById(state, id: string) {
       const index = state.todos.findIndex(t => t.id === id);
       state.todos.splice(index, 1);
     },
@@ -39,14 +39,14 @@ export default createStore({
       const index = state.todos.findIndex(t => t.id === todo.id);
       state.todos[index] = todo;
     },
-    initLocalTodo(state, id: number) {
+    initLocalTodo(state, id: string) {
       const index = state.todos.findIndex(t => t.id === id);
       state.localTodo = state.todos[index];
     },
     setLocalTodo(state, todo: IToDo) {
       state.localTodo = todo;
     },
-    setLocalTodoId(state, id: number) {
+    setLocalTodoId(state, id: string) {
       state.localTodo.id = id;
     },
     setLocalTodoTitle(state, title: string) {
@@ -60,7 +60,7 @@ export default createStore({
     },
     clearLocalTodo(state) {
       state.localTodo = {
-        id: 0,
+        id: '0',
         title: '',
         description: '',
         isCompleted: false,
@@ -74,7 +74,7 @@ export default createStore({
     removeTodo({ commit }, todo: IToDo) {
       commit('removeTodo', todo);
     },
-    removeTodoById({ commit }, id: number) {
+    removeTodoById({ commit }, id: string) {
       commit('removeTodoById', id);
     },
     updateTodo({ commit }, todo: IToDo) {
@@ -83,7 +83,7 @@ export default createStore({
     setLocalTodo({ commit }, todo: IToDo) {
       commit('setLocalTodo', todo);
     },
-    setLocalTodoId({ commit }, id: number) {
+    setLocalTodoId({ commit }, id: string) {
       commit('setLocalTodoId', id);
     },
     setLocalTodoTitle({ commit }, title: string) {
