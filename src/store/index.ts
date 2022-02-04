@@ -1,6 +1,14 @@
 import { createStore } from 'vuex';
 import { IToDo } from '@/Interfaces/IToDo';
 
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
+
+
+
 export default createStore({
   state: {
     todos: [
@@ -86,7 +94,5 @@ export default createStore({
       commit('clearLocalTodo');
     }
   },
-  modules: {
-
-  },
+  plugins: [vuexLocal.plugin]
 });
