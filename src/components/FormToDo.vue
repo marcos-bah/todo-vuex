@@ -25,7 +25,18 @@
     </div>
     <div class="field is-grouped">
       <div class="control">
-        <button type="submit" class="button is-link">Enviar</button>
+        <button type="submit" class="button is-link">
+          {{ isEdit ? "Atualizar" : "Adicionar" }}
+        </button>
+      </div>
+      <div class="control" v-show="isEdit">
+        <button
+          type="reset"
+          @click="apagarTodo"
+          class="button is-danger is-light"
+        >
+          Deletar
+        </button>
       </div>
       <div class="control">
         <button
@@ -56,18 +67,33 @@ export default defineComponent({
     const setLocalTodoDescription = (description: string) =>
       store.commit("setLocalTodoDescription", description);
     const clearLocalTodo = () => store.commit("clearLocalTodo");
+    const idExist = (id: number): boolean =>
+      store.state.todos.find((todo: { id: number }) => todo.id === id);
+    const removeTodoById = (id: number) => store.commit("removeTodoById", id);
     return {
       localTodo,
       setLocalTodoId,
       setLocalTodoTitle,
       setLocalTodoDescription,
       clearLocalTodo,
+      idExist,
+      removeTodoById,
     };
   },
   methods: {
     resetLocalTodo() {
       this.clearLocalTodo();
       this.$router.back();
+    },
+    apagarTodo() {
+      this.removeTodoById(this.localTodo.id);
+      this.clearLocalTodo();
+      this.$router.back();
+    },
+  },
+  computed: {
+    isEdit(): boolean {
+      return this.idExist(this.localTodo.id);
     },
   },
   mounted() {

@@ -33,6 +33,10 @@ export default createStore({
     removeTodo(state, todo: IToDo) {
       state.todos.splice(state.todos.indexOf(todo), 1);
     },
+    removeTodoById(state, id: number) {
+      const index = state.todos.findIndex(t => t.id === id);
+      state.todos.splice(index, 1);
+    },
     updateTodo(state, todo: IToDo) {
       const index = state.todos.findIndex(t => t.id === todo.id);
       state.todos[index] = todo;
@@ -71,6 +75,9 @@ export default createStore({
     },
     removeTodo({ commit }, todo: IToDo) {
       commit('removeTodo', todo);
+    },
+    removeTodoById({ commit }, id: number) {
+      commit('removeTodoById', id);
     },
     updateTodo({ commit }, todo: IToDo) {
       commit('updateTodo', todo);
