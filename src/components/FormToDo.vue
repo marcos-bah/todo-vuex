@@ -57,7 +57,7 @@ import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
 export default defineComponent({
   name: "FormToDo",
-  emits: ["add"],
+
   setup() {
     const store = useStore();
     const localTodo = computed(() => store.state.localTodo as IToDo);
@@ -78,6 +78,9 @@ export default defineComponent({
       store.commit("addTodo", localTodo.value);
       store.commit("clearLocalTodo");
     };
+    const initLocalTodo = (id: number) => {
+      store.commit("initLocalTodo", id);
+    };
     return {
       localTodo,
       setLocalTodoId,
@@ -88,16 +91,17 @@ export default defineComponent({
       removeTodoById,
       updateTodo,
       addTodo,
+      initLocalTodo,
     };
   },
   methods: {
     submitTodo() {
+      if (this.localTodo === null) return false;
       if (this.isEdit) {
         this.updateTodo();
       } else {
         this.addTodo();
       }
-
       this.$router.push("/");
     },
     resetLocalTodo() {
@@ -116,6 +120,11 @@ export default defineComponent({
     },
   },
   mounted() {
+    const id = parseInt((this.$route.params.id || "0").toString());
+    if (id) {
+      this.initLocalTodo(id);
+    }
+
     if (this.localTodo.id === 0) {
       this.setLocalTodoId(new Date().getTime());
     }
