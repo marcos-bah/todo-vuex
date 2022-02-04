@@ -31,7 +31,7 @@ export default createStore({
     removeTodo(state, todo: IToDo) {
       state.todos.splice(state.todos.indexOf(todo), 1);
     },
-    removeTodoById(state, id: string) {
+    removeTodoById(state, id: IToDo['id']) {
       const index = state.todos.findIndex(t => t.id === id);
       state.todos.splice(index, 1);
     },
@@ -39,23 +39,23 @@ export default createStore({
       const index = state.todos.findIndex(t => t.id === todo.id);
       state.todos[index] = todo;
     },
-    initLocalTodo(state, id: string) {
+    initLocalTodo(state, id: IToDo['id']) {
       const index = state.todos.findIndex(t => t.id === id);
       state.localTodo = state.todos[index];
     },
     setLocalTodo(state, todo: IToDo) {
       state.localTodo = todo;
     },
-    setLocalTodoId(state, id: string) {
+    setLocalTodoId(state, id: IToDo['id']) {
       state.localTodo.id = id;
     },
-    setLocalTodoTitle(state, title: string) {
+    setLocalTodoTitle(state, title: IToDo['title']) {
       state.localTodo.title = title;
     },
-    setLocalTodoDescription(state, description: string) {
+    setLocalTodoDescription(state, description: IToDo['description']) {
       state.localTodo.description = description;
     },
-    setLocalTodoIsCompleted(state, isCompleted: boolean) {
+    setLocalTodoIsCompleted(state, isCompleted: IToDo['isCompleted']) {
       state.localTodo.isCompleted = isCompleted;
     },
     clearLocalTodo(state) {
